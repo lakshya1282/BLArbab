@@ -1,0 +1,3 @@
+
+ALTER TABLE orders 
+ADD COLUMN IF NOT EXISTS payment_mode TEXT NOT NULL DEFAULT 'cash';

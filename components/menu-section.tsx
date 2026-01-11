@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useCart } from "@/lib/cart-context"
 
 // Images and data remain the same
 const foodImages = [
@@ -76,6 +77,7 @@ const menuData = {
 }
 
 function MenuItem({ item }: { item: { name: string; price: number; bestseller?: boolean; tag?: string } }) {
+  const { addItem } = useCart()
   return (
     <div className="flex items-center justify-between py-4 border-b border-[#834024]/10 last:border-0 group hover:bg-[#834024]/5 px-3 -mx-3 transition-colors duration-300">
       <div className="flex flex-col gap-1">
@@ -89,7 +91,15 @@ function MenuItem({ item }: { item: { name: string; price: number; bestseller?: 
         </div>
         {item.tag && <span className="text-[10px] font-['Bebas_Neue'] tracking-[0.1em] text-[#834024]/60 uppercase">{item.tag}</span>}
       </div>
-      <span className="font-['Awesome_Serif'] italic text-[#834024] font-bold">₹{item.price}/-</span>
+      <div className="flex items-center gap-4">
+        <span className="font-['Awesome_Serif'] italic text-[#834024] font-bold">₹{item.price}/-</span>
+        <button 
+          onClick={() => addItem({ name: item.name, price: item.price })}
+          className="bg-[#834024] text-[#F6EEE5] px-4 py-1.5 rounded-sm text-xs font-['Bebas_Neue'] tracking-wider opacity-0 group-hover:opacity-100 transition-opacity hover:bg-[#834024]/90"
+        >
+          ADD
+        </button>
+      </div>
     </div>
   )
 }

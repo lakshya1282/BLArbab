@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     generator: 'v0.app'
 }
 
+import { Toaster } from "sonner"
+import { CartProvider } from "@/lib/cart-context"
+import { CartDrawer } from "@/components/cart-drawer"
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${playfair.variable} ${inter.variable} ${bebas.variable} ${lato.variable} font-sans antialiased`}>
-        {children}
+        <CartProvider>
+          {children}
+          <CartDrawer />
+          <Toaster />
+        </CartProvider>
         <Analytics />
       </body>
     </html>

@@ -2,11 +2,13 @@
 
 import type React from "react"
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Menu, X, ShoppingBag } from "lucide-react"
 import Link from "next/link"
+import { useCart } from "@/lib/cart-context"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { setIsOpen: setCartOpen, items } = useCart()
   const [isDarkBackground, setIsDarkBackground] = useState(true)
   const [activeLink, setActiveLink] = useState("home")
 
@@ -104,17 +106,47 @@ export function Navbar() {
                 }`} />
               </a>
             ))}
+            <button
+              onClick={() => setCartOpen(true)}
+              className={`relative p-2 transition-colors duration-500 ${
+                isDarkBackground
+                  ? "text-white/90 hover:text-white"
+                  : "text-[#683419] hover:text-[#683419]/70"
+              }`}
+            >
+              <ShoppingBag className="h-5 w-5 lg:h-6 lg:w-6" />
+              {items.length > 0 && (
+                <span className="absolute top-0 right-0 bg-[#834024] text-[#F6EEE5] text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                  {items.length}
+                </span>
+              )}
+            </button>
           </div>
 
           {/* MOBILE TOGGLE: Larger icon */}
-          <button 
-            className={`md:hidden p-3 transition-colors duration-500 ${
-              isDarkBackground ? "text-white" : "text-[#683419]"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
-          </button>
+          <div className="flex items-center gap-4 md:hidden">
+            <button
+              onClick={() => setCartOpen(true)}
+              className={`relative p-2 transition-colors duration-500 ${
+                isDarkBackground ? "text-white" : "text-[#683419]"
+              }`}
+            >
+              <ShoppingBag className="h-6 w-6" />
+              {items.length > 0 && (
+                <span className="absolute top-0 right-0 bg-[#834024] text-[#F6EEE5] text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">
+                  {items.length}
+                </span>
+              )}
+            </button>
+            <button 
+              className={`p-3 transition-colors duration-500 ${
+                isDarkBackground ? "text-white" : "text-[#683419]"
+              }`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
+            </button>
+          </div>
         </div>
 
         {/* MOBILE MENU: Increased font and padding */}
